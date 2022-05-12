@@ -12,6 +12,7 @@ public class ActionCooldownMainClass extends JavaPlugin {
     // Fired when plugin is disabled
     @Override
     public void onDisable() {
+    	
 
     }
 }
