@@ -14,5 +14,5 @@ public class ActionCooldownMainClass extends JavaPlugin {
     public void onDisable() {
     	
 
-    }
+   }
 }
