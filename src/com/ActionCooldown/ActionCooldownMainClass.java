@@ -1,5 +1,8 @@
 package com.ActionCooldown;
 
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ActionCooldownMainClass extends JavaPlugin {
@@ -10,6 +13,8 @@ public class ActionCooldownMainClass extends JavaPlugin {
     	
     	this.getCommand("cooldown").setExecutor(new CooldownCommand());
     	
+    	getServer().getPluginManager().registerEvents(new CooldownListener(), this);
+    	
     }
     
     // Fired when plugin is disabled
@@ -18,4 +23,6 @@ public class ActionCooldownMainClass extends JavaPlugin {
     	
 
    }
+    
+
 }
