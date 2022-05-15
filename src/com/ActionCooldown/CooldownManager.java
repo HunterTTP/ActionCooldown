@@ -11,16 +11,16 @@ public class CooldownManager {
 
     private final Map<String, Long> cooldowns = new HashMap<>();
 
-    public void setCooldown(String ue, long time) {
+    public void setCooldown(String playerevent, long time) {
         if(time < 1) {
-            cooldowns.remove(ue);
+            cooldowns.remove(playerevent);
         } else {
-            cooldowns.put(ue, time);
+            cooldowns.put(playerevent, time);
         }
     }
 
-    public long getCooldown(String ue){
-        return cooldowns.getOrDefault(ue, (long) 0);
+    public long getCooldown(String playerevent){
+        return cooldowns.getOrDefault(playerevent, (long) 0);
     }
 
 }

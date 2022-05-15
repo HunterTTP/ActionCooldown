@@ -14,24 +14,23 @@ public class CooldownListener implements Listener{
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
     		
-			Player p = event.getPlayer();
-			String pn = p.getName();
-			//String u = p.getUniqueId().toString();
-			String e = event.getEventName();
-			String ue = pn + e;
+			Player player = event.getPlayer();
+			String uniqueid = player.getUniqueId().toString();
+			String eventname = event.getEventName();
+			String playerevent = uniqueid + eventname;
             
     		//Get the amount of milliseconds that have passed since the feature was last used.
-            long timeLeft = System.currentTimeMillis() - cooldownManager.getCooldown(ue);
+            long timeLeft = System.currentTimeMillis() - cooldownManager.getCooldown(playerevent);
             
             if(TimeUnit.MILLISECONDS.toSeconds(timeLeft) >= CooldownManager.DEFAULT_COOLDOWN){
             	
-                p.sendMessage(ChatColor.GREEN + "A block has been placed!");
-                cooldownManager.setCooldown(ue, System.currentTimeMillis());
+                player.sendMessage(ChatColor.GREEN + "A block has been placed!");
+                cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
             
             }else{
             	
             	event.setCancelled(true);
-                p.sendMessage(ChatColor.RED.toString() + (TimeUnit.MILLISECONDS.toSeconds(timeLeft) - CooldownManager.DEFAULT_COOLDOWN) + " seconds before " + ue + " can place blocks again"); 
+                player.sendMessage(ChatColor.RED.toString() + (TimeUnit.MILLISECONDS.toSeconds(timeLeft) - CooldownManager.DEFAULT_COOLDOWN) + " seconds before " + playerevent + " can place blocks again"); 
                 
             }
             
