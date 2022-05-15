@@ -4,15 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.bukkit.plugin.*;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
 public class CooldownManager {
 	
 	
-	private static ActionCooldownMainClass mainClass = ActionCooldownMainClass.getInstance();
+	private static MainClass mainClass = MainClass.getInstance();
 	
 	public static long DEFAULT_COOLDOWN = Long.parseLong(mainClass.getConfig().getString("global-cooldown-seconds"));
 

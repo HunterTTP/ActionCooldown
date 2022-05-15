@@ -1,5 +1,5 @@
 name: ActionCooldown
-main: com.ActionCooldown.ActionCooldownMainClass
+main: com.ActionCooldown.MainClass
 version: 1.0
 api-version: 1.13
 commands:

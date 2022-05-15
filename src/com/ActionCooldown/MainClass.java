@@ -1,18 +1,11 @@
 package com.ActionCooldown;
 
-
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ActionCooldownMainClass extends JavaPlugin {
+public class MainClass extends JavaPlugin {
 	
-	public static ActionCooldownMainClass instance;
+	public static MainClass instance;
 	
-	//public static Plugin plugin = null;
-	
-    //public static long DEFAULT_COOLDOWN = ActionCooldownMainClass.getConfig().getLong("global-cooldown-seconds");
-    
-	// Fired when plugin is first enabled
     @Override
     public void onEnable() {
     	
@@ -31,7 +24,7 @@ public class ActionCooldownMainClass extends JavaPlugin {
 
    }
     
-    public static ActionCooldownMainClass getInstance() {
+    public static MainClass getInstance() {
         return instance;
     }
     
