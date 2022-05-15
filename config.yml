@@ -1,4 +1,7 @@
 block-place-cooldown-enabled: true
+block-place-cooldown-actionlimit: 1
 block-place-cooldown-duration: 30
+
 block-break-cooldown-enabled: true
+block-break-cooldown-actionlimit: 1
 block-break-cooldown-duration: 30
