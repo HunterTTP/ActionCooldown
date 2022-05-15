@@ -17,7 +17,6 @@ public class CooldownListener implements Listener{
     @EventHandler
     //public void onPlace(BlockPlaceEvent event, CommandSender sender, Command command, String label, String[] args) {
     public void onPlace(BlockPlaceEvent event) {
-    	
     		
 			Player p = event.getPlayer();
             
@@ -32,7 +31,7 @@ public class CooldownListener implements Listener{
             }else{
             	
             	event.setCancelled(true);
-                p.sendMessage(ChatColor.RED.toString() + (TimeUnit.MILLISECONDS.toSeconds(timeLeft) - CooldownManager.DEFAULT_COOLDOWN) + " seconds before you can use this feature again."); 
+                p.sendMessage(ChatColor.RED.toString() + (TimeUnit.MILLISECONDS.toSeconds(timeLeft) - CooldownManager.DEFAULT_COOLDOWN) + " seconds before you can place blocks again"); 
                 
             }
             

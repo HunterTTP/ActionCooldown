@@ -4,11 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.plugin.*;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
 public class CooldownManager {
+	
+	
+	private static ActionCooldownMainClass mainClass = ActionCooldownMainClass.getInstance();
+	
+	public static long DEFAULT_COOLDOWN = Long.parseLong(mainClass.getConfig().getString("global-cooldown-seconds"));
 
     private final Map<UUID, Long> cooldowns = new HashMap<>();
-
-    public static final long DEFAULT_COOLDOWN = 15;
 
     public void setCooldown(UUID player, long time) {
         if(time < 1) {

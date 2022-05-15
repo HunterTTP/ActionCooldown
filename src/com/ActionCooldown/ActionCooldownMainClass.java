@@ -1,17 +1,24 @@
 package com.ActionCooldown;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockPlaceEvent;
+
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ActionCooldownMainClass extends JavaPlugin {
+	
+	public static ActionCooldownMainClass instance;
+	
+	//public static Plugin plugin = null;
+	
+    //public static long DEFAULT_COOLDOWN = ActionCooldownMainClass.getConfig().getLong("global-cooldown-seconds");
     
 	// Fired when plugin is first enabled
     @Override
     public void onEnable() {
     	
-    	this.getCommand("cooldown").setExecutor(new CooldownCommand());
+    	instance = this;
+    	
+    	this.saveDefaultConfig();
     	
     	getServer().getPluginManager().registerEvents(new CooldownListener(), this);
     	
@@ -23,6 +30,10 @@ public class ActionCooldownMainClass extends JavaPlugin {
     	
 
    }
+    
+    public static ActionCooldownMainClass getInstance() {
+        return instance;
+    }
     
 
 }
