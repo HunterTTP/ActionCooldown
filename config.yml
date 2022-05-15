@@ -1,2 +1,4 @@
-use-global-cooldown: true
-global-cooldown-seconds: 30
+block-place-cooldown-enabled: true
+block-place-cooldown-duration: 30
+block-break-cooldown-enabled: true
+block-break-cooldown-duration: 30

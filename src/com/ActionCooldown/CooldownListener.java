@@ -9,30 +9,34 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 public class CooldownListener implements Listener{
-
+	
 	private final CooldownManager cooldownManager = new CooldownManager();
 	
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
-    		
-			Player player = event.getPlayer();
-			String uniqueid = player.getUniqueId().toString();
-			String eventname = event.getEventName();
-			String playerevent = uniqueid + eventname;
-            
-    		//Get the amount of milliseconds that have passed since the feature was last used.
-            long timeLeft = System.currentTimeMillis() - cooldownManager.getCooldown(playerevent);
-            
-            if(TimeUnit.MILLISECONDS.toSeconds(timeLeft) >= CooldownManager.DEFAULT_COOLDOWN){
-            	
-                player.sendMessage(ChatColor.GREEN + "A block has been placed!");
-                cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
-            
-            }else{
-            	
-            	event.setCancelled(true);
-                player.sendMessage(ChatColor.RED.toString() + (TimeUnit.MILLISECONDS.toSeconds(timeLeft) - CooldownManager.DEFAULT_COOLDOWN) + " seconds before " + playerevent + " can place blocks again"); 
-                
+			
+			//Check if enabled
+			if(CooldownSettings.block_place_cd_enabeled == "true") {
+				
+				Player player = event.getPlayer();
+				String uniqueid = player.getUniqueId().toString();
+				String eventname = event.getEventName();
+				String playerevent = uniqueid + eventname;
+			
+	    		//Get the amount of milliseconds that have passed since the feature was last used.
+	            long timeLeft = System.currentTimeMillis() - cooldownManager.getCooldown(playerevent);
+	            
+	            if(TimeUnit.MILLISECONDS.toSeconds(timeLeft) >= CooldownSettings.block_place_duration){
+	            	
+	                player.sendMessage(ChatColor.GREEN + "A block has been placed!");
+	                cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
+	            
+	            }else{
+	            	
+	            	event.setCancelled(true);
+	                player.sendMessage(ChatColor.RED.toString() + (TimeUnit.MILLISECONDS.toSeconds(timeLeft) - CooldownSettings.block_place_duration) + " seconds before " + playerevent + " can place blocks again"); 
+	                
+	            }
             }
             
     }
@@ -40,6 +44,9 @@ public class CooldownListener implements Listener{
     
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
+    	
+		//Check if enabled
+		if(CooldownSettings.block_break_cd_enabeled == "true") {
     		
 			Player player = event.getPlayer();
 			String uniqueid = player.getUniqueId().toString();
@@ -49,7 +56,7 @@ public class CooldownListener implements Listener{
     		//Get the amount of milliseconds that have passed since the feature was last used.
             long timeLeft = System.currentTimeMillis() - cooldownManager.getCooldown(playerevent);
             
-            if(TimeUnit.MILLISECONDS.toSeconds(timeLeft) >= CooldownManager.DEFAULT_COOLDOWN){
+            if(TimeUnit.MILLISECONDS.toSeconds(timeLeft) >= CooldownSettings.block_break_duration){
             	
                 player.sendMessage(ChatColor.GREEN + "A block has been placed!");
                 cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
@@ -57,9 +64,10 @@ public class CooldownListener implements Listener{
             }else{
             	
             	event.setCancelled(true);
-                player.sendMessage(ChatColor.RED.toString() + (TimeUnit.MILLISECONDS.toSeconds(timeLeft) - CooldownManager.DEFAULT_COOLDOWN) + " seconds before " + playerevent + " can place blocks again"); 
-                
+                player.sendMessage(ChatColor.RED.toString() + (TimeUnit.MILLISECONDS.toSeconds(timeLeft) - CooldownSettings.block_break_duration) + " seconds before " + playerevent + " can place blocks again"); 
+
             }
+		}
             
     }
     
