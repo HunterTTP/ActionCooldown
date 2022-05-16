@@ -1,9 +1,0 @@
-name: ActionCooldown
-main: com.ActionCooldown.MainClass
-version: 1.0
-api-version: 1.13
-commands:
-   cooldown:
-      description: Your description
-      usage: /<command>
-      permission: yourplugin.yourcommandpermission
