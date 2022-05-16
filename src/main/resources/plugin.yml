@@ -1,0 +1,5 @@
+name: ActionCooldown
+version: '${project.version}'
+main: me.hunterttp.actioncooldown.ActionCooldown
+api-version: 1.18
+authors: [ HunterTTP ]
