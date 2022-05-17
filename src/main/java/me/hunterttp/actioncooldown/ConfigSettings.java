@@ -1,6 +1,6 @@
 package me.hunterttp.actioncooldown;
 
-public class CooldownSettings {
+public class ConfigSettings {
 
     private static MainClass mainClass = MainClass.getInstance();
 

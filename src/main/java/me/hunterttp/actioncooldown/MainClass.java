@@ -13,7 +13,7 @@ public final class MainClass extends JavaPlugin {
 
         this.saveDefaultConfig();
 
-        getServer().getPluginManager().registerEvents(new CooldownListener(), this);
+        getServer().getPluginManager().registerEvents(new ActionListener(), this);
 
     }
 
