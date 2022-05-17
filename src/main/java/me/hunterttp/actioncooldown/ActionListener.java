@@ -24,9 +24,9 @@ public class ActionListener implements Listener{
             String eventname = event.getEventName();
             String playerevent = uniqueid + eventname;
 
-            if(ActionCounter.checkCount(playerevent) < ConfigSettings.block_place_cd_limit) {
+            if(actionCounter.checkCount(playerevent) < ConfigSettings.block_place_cd_limit) {
 
-                ActionCounter.addCount(playerevent);
+                actionCounter.addCount(playerevent);
 
                 cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
 
@@ -38,7 +38,7 @@ public class ActionListener implements Listener{
 
                     cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
 
-                    ActionCounter.resetCount(playerevent);
+                    actionCounter.resetCount(playerevent);
 
                 }else{
 
@@ -63,9 +63,9 @@ public class ActionListener implements Listener{
             String eventname = event.getEventName();
             String playerevent = uniqueid + eventname;
 
-            if(ActionCounter.checkCount(playerevent) < ConfigSettings.block_break_cd_limit) {
+            if(actionCounter.checkCount(playerevent) < ConfigSettings.block_break_cd_limit) {
 
-                ActionCounter.addCount(playerevent);
+                actionCounter.addCount(playerevent);
 
                 cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
 
@@ -77,7 +77,7 @@ public class ActionListener implements Listener{
 
                     cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
 
-                    ActionCounter.resetCount(playerevent);
+                    actionCounter.resetCount(playerevent);
 
                 }else{
 
