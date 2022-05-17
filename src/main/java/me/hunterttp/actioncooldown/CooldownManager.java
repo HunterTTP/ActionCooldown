@@ -16,7 +16,7 @@ public class CooldownManager {
     }
 
     public long getCooldown(String playerevent){
-        return cooldowns.getOrDefault(playerevent, (long) 0);
+        return cooldowns.getOrDefault(playerevent, (long) System.currentTimeMillis());
     }
 
 }

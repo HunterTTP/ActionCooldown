@@ -16,35 +16,44 @@ public class ActionListener implements Listener{
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
 
-        //Check if enabled
-        if(ConfigSettings.block_place_cd_enabeled == "true") {
+        Player player = event.getPlayer();
+        String uniqueId = player.getUniqueId().toString();
+        String eventName = event.getEventName();
+        String playerEvent = uniqueId + eventName;
+        String blockName = event.getBlockPlaced().getType().toString();
+        String exemptBlocks = ConfigSettings.block_place_exempt;
+        String cdEnabled = ConfigSettings.block_place_cd_enabeled;
+        long timeLeft = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldownManager.getCooldown(playerEvent));
+        long cdDuration = ConfigSettings.block_place_cd_duration;
+        long actionLimit = ConfigSettings.block_place_cd_limit;
+        long currentTime = System.currentTimeMillis();
+        boolean blockExempt = exemptBlocks.toLowerCase().contains(blockName.toLowerCase());
 
-            Player player = event.getPlayer();
-            String uniqueid = player.getUniqueId().toString();
-            String eventname = event.getEventName();
-            String playerevent = uniqueid + eventname;
+        if(cdEnabled == "true" && blockExempt == false) {
 
-            if(actionCounter.checkCount(playerevent) < ConfigSettings.block_place_cd_limit) {
+            if(actionCounter.checkCount(playerEvent) < actionLimit) {
 
-                actionCounter.addCount(playerevent);
+                actionCounter.addCount(playerEvent);
 
-                cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
+                cooldownManager.setCooldown(playerEvent, currentTime);
 
             }else{
 
-                long timeLeft = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldownManager.getCooldown(playerevent));
+                if(timeLeft >= cdDuration && actionLimit > 0){
 
-                if(timeLeft >= ConfigSettings.block_place_cd_duration){
+                    cooldownManager.setCooldown(playerEvent, currentTime);
 
-                    cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
-
-                    actionCounter.resetCount(playerevent);
+                    actionCounter.resetCount(playerEvent);
 
                 }else{
 
                     event.setCancelled(true);
 
-                    player.sendMessage(ChatColor.DARK_RED.toString() + (timeLeft - ConfigSettings.block_place_cd_duration) + " seconds before you can do that again");
+                    if (actionLimit <= 0){
+                        player.sendMessage(ChatColor.DARK_RED.toString() + "This action is not allowed");
+                    }else{
+                        player.sendMessage(ChatColor.DARK_RED.toString() + (timeLeft - cdDuration) + " seconds before you can do that again");
+                    }
 
                 }
             }
@@ -55,35 +64,44 @@ public class ActionListener implements Listener{
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
 
-        //Check if enabled
-        if(ConfigSettings.block_break_cd_enabeled == "true") {
+        Player player = event.getPlayer();
+        String uniqueId = player.getUniqueId().toString();
+        String eventName = event.getEventName();
+        String playerEvent = uniqueId + eventName;
+        String blockName = event.getBlock().getType().toString();
+        String exemptBlocks = ConfigSettings.block_break_exempt;
+        String cdEnabled = ConfigSettings.block_break_cd_enabeled;
+        long timeLeft = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldownManager.getCooldown(playerEvent));
+        long cdDuration = ConfigSettings.block_place_cd_duration;
+        long actionLimit = ConfigSettings.block_break_cd_limit;
+        long currentTime = System.currentTimeMillis();
+        boolean blockExempt = exemptBlocks.toLowerCase().contains(blockName.toLowerCase());
 
-            Player player = event.getPlayer();
-            String uniqueid = player.getUniqueId().toString();
-            String eventname = event.getEventName();
-            String playerevent = uniqueid + eventname;
+        if(cdEnabled == "true"  && blockExempt == false) {
 
-            if(actionCounter.checkCount(playerevent) < ConfigSettings.block_break_cd_limit) {
+            if(actionCounter.checkCount(playerEvent) < actionLimit) {
 
-                actionCounter.addCount(playerevent);
+                actionCounter.addCount(playerEvent);
 
-                cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
+                cooldownManager.setCooldown(playerEvent, currentTime);
 
             }else{
 
-                long timeLeft = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldownManager.getCooldown(playerevent));
+                if(timeLeft >= cdDuration && actionLimit > 0){
 
-                if(timeLeft >= ConfigSettings.block_break_cd_duration){
+                    cooldownManager.setCooldown(playerEvent, currentTime);
 
-                    cooldownManager.setCooldown(playerevent, System.currentTimeMillis());
-
-                    actionCounter.resetCount(playerevent);
+                    actionCounter.resetCount(playerEvent);
 
                 }else{
 
                     event.setCancelled(true);
 
-                    player.sendMessage(ChatColor.DARK_RED.toString() + (timeLeft - ConfigSettings.block_break_cd_duration) + " seconds before you can do that again");
+                    if (actionLimit <= 0){
+                        player.sendMessage(ChatColor.DARK_RED.toString() + "This action is not allowed");
+                    }else{
+                        player.sendMessage(ChatColor.DARK_RED.toString() + (timeLeft - cdDuration) + " seconds before you can do that again");
+                    }
 
                 }
             }
