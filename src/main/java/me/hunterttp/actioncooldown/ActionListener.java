@@ -29,7 +29,7 @@ public class ActionListener implements Listener{
         long currentTime = System.currentTimeMillis();
         boolean blockExempt = exemptBlocks.toLowerCase().contains(blockName.toLowerCase());
 
-        if(cdEnabled == "true" && blockExempt == false) {
+        if(cdEnabled == "true" && !blockExempt) {
 
             if(actionCounter.checkCount(playerEvent) < actionLimit) {
 
