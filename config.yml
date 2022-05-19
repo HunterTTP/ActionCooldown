@@ -1,9 +1,9 @@
 block-place-cooldown-enabled: true
-block-place-cooldown-actionlimit: 1
+block-place-cooldown-actionlimit: 5
 block-place-cooldown-duration: 30
 block-place-exempt-blocks: None
 
 block-break-cooldown-enabled: true
-block-break-cooldown-actionlimit: 1
+block-break-cooldown-actionlimit: 5
 block-break-cooldown-duration: 30
 block-break-exempt-blocks: None

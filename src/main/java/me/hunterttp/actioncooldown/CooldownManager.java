@@ -2,6 +2,7 @@ package me.hunterttp.actioncooldown;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.*;
 
 public class CooldownManager {
 

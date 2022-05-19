@@ -15,13 +15,19 @@ public class ActionCounter {
 
     public void resetCount(String playerevent) {
 
-        actiontracker.put(playerevent, 1);
+        actiontracker.put(playerevent, 0);
 
     }
 
     public void addCount(String playerevent) {
 
         actiontracker.put(playerevent, actiontracker.getOrDefault(playerevent, 0) + 1);
+
+    }
+
+    public void subtractCount(String playerevent) {
+
+        actiontracker.put(playerevent, actiontracker.getOrDefault(playerevent, 0) - 1);
 
     }
 
