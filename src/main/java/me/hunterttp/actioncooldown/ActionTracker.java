@@ -72,7 +72,7 @@ public class ActionTracker {
 
     }
 
-    public void setCooldown(String playerEvent, long time) {
+    public void logEventTime(String playerEvent, long time) {
         if(time < 1) {
             coolDowns.remove(playerEvent);
         } else {
@@ -80,7 +80,7 @@ public class ActionTracker {
         }
     }
 
-    public long getCooldown(String playerEvent){
+    public long checkEventTime(String playerEvent){
         return coolDowns.getOrDefault(playerEvent, (long) System.currentTimeMillis());
     }
 

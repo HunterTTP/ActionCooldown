@@ -23,7 +23,7 @@ public class ActionListener implements Listener {
         String exemptBlocks = ConfigSettings.block_place_exempt;
         String cdEnabled = ConfigSettings.block_place_cd_enabled;
         String notifyChatLimit = ConfigSettings.notify_chat_limit;
-        long timeSince = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - actionTracker.getCooldown(playerEvent));
+        long timeSinceEvent = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - actionTracker.checkEventTime(playerEvent));
         long cdDuration = ConfigSettings.block_place_cd_duration;
         long actionLimit = ConfigSettings.block_place_cd_limit;
         long currentTime = System.currentTimeMillis();
@@ -35,12 +35,12 @@ public class ActionListener implements Listener {
 
             if (actionTracker.checkCount(playerEvent) < actionLimit) {
 
-                actionTracker.setCooldown(playerEvent, currentTime);
+                actionTracker.logEventTime(playerEvent, currentTime);
                 if(notifyChatLimit == "true"){player.sendMessage(actionTracker.checkCount(playerEvent) + " out of " + actionLimit);}
 
             } else if (actionTracker.checkCount(playerEvent) == actionLimit) {
 
-                actionTracker.setCooldown(playerEvent, currentTime);
+                actionTracker.logEventTime(playerEvent, currentTime);
                 actionTracker.startTimer(player, eventName, cdDuration, playerEvent);
                 if(notifyChatLimit == "true"){player.sendMessage(actionTracker.checkCount(playerEvent) + " out of " + actionLimit);}
 
@@ -52,7 +52,7 @@ public class ActionListener implements Listener {
                 if (actionLimit <= 0) {
                     player.sendMessage(ChatColor.DARK_RED.toString() + "This action is not allowed");
                 } else {
-                    player.sendMessage(ChatColor.DARK_RED.toString() + (timeSince - cdDuration) + " seconds before you can do that again");
+                    player.sendMessage(ChatColor.DARK_RED.toString() + (timeSinceEvent - cdDuration) + " seconds before you can do that again");
                 }
 
             }
@@ -70,7 +70,7 @@ public class ActionListener implements Listener {
         String exemptBlocks = ConfigSettings.block_break_exempt;
         String cdEnabled = ConfigSettings.block_break_cd_enabled;
         String notifyChatLimit = ConfigSettings.notify_chat_limit;
-        long timeSince = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - actionTracker.getCooldown(playerEvent));
+        long timeSinceEvent = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - actionTracker.checkEventTime(playerEvent));
         long cdDuration = ConfigSettings.block_break_cd_duration;
         long actionLimit = ConfigSettings.block_break_cd_limit;
         long currentTime = System.currentTimeMillis();
@@ -82,12 +82,12 @@ public class ActionListener implements Listener {
 
             if (actionTracker.checkCount(playerEvent) < actionLimit) {
 
-                actionTracker.setCooldown(playerEvent, currentTime);
+                actionTracker.logEventTime(playerEvent, currentTime);
                 if(notifyChatLimit == "true"){player.sendMessage(actionTracker.checkCount(playerEvent) + " out of " + actionLimit);}
 
             } else if (actionTracker.checkCount(playerEvent) == actionLimit) {
 
-                actionTracker.setCooldown(playerEvent, currentTime);
+                actionTracker.logEventTime(playerEvent, currentTime);
                 actionTracker.startTimer(player, eventName, cdDuration, playerEvent);
                 if(notifyChatLimit == "true"){player.sendMessage(actionTracker.checkCount(playerEvent) + " out of " + actionLimit);}
 
@@ -99,7 +99,7 @@ public class ActionListener implements Listener {
                 if (actionLimit <= 0) {
                     player.sendMessage(ChatColor.DARK_RED.toString() + "This action is not allowed");
                 } else {
-                    player.sendMessage(ChatColor.DARK_RED.toString() + (timeSince - cdDuration) + " seconds before you can do that again");
+                    player.sendMessage(ChatColor.DARK_RED.toString() + (timeSinceEvent - cdDuration) + " seconds before you can do that again");
                 }
 
             }
