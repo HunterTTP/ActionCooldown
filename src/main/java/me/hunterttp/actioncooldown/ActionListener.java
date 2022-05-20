@@ -36,13 +36,13 @@ public class ActionListener implements Listener {
             if (actionTracker.checkCount(playerEvent) < actionLimit) {
 
                 actionTracker.logEventTime(playerEvent, currentTime);
-                if(notifyChatLimit == "true"){player.sendMessage(actionTracker.checkCount(playerEvent) + " out of " + actionLimit);}
+                if(notifyChatLimit == "true"){player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);}
 
             } else if (actionTracker.checkCount(playerEvent) == actionLimit) {
 
                 actionTracker.logEventTime(playerEvent, currentTime);
                 actionTracker.startTimer(player, eventName, cdDuration, playerEvent);
-                if(notifyChatLimit == "true"){player.sendMessage(actionTracker.checkCount(playerEvent) + " out of " + actionLimit);}
+                if(notifyChatLimit == "true"){player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);}
 
             } else {
 
@@ -83,13 +83,13 @@ public class ActionListener implements Listener {
             if (actionTracker.checkCount(playerEvent) < actionLimit) {
 
                 actionTracker.logEventTime(playerEvent, currentTime);
-                if(notifyChatLimit == "true"){player.sendMessage(actionTracker.checkCount(playerEvent) + " out of " + actionLimit);}
+                if(notifyChatLimit == "true"){player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);}
 
             } else if (actionTracker.checkCount(playerEvent) == actionLimit) {
 
                 actionTracker.logEventTime(playerEvent, currentTime);
                 actionTracker.startTimer(player, eventName, cdDuration, playerEvent);
-                if(notifyChatLimit == "true"){player.sendMessage(actionTracker.checkCount(playerEvent) + " out of " + actionLimit);}
+                if(notifyChatLimit == "true"){player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);}
 
             } else {
 

@@ -56,7 +56,7 @@ public class ActionTracker {
                 resetCount(playerEvent);
 
                 if(soundEnabled == "true") {
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1.0f, randomNote);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, randomNote);
                     //player.sendMessage("Note was: "+ randomNote);
                 }
 
