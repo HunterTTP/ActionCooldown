@@ -5,37 +5,34 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class ActionCounter {
+public class ActionTracker {
 
-    private final HashMap<String, Integer> actiontracker = new HashMap<>();
+    private final HashMap<String, Integer> actionTracker = new HashMap<>();
+    private final Map<String, Long> coolDowns = new HashMap<>();
     String notifyEnabled = ConfigSettings.notify_chat_cd;
-    String soundEnabled = ConfigSettings.play_sound_notifcation;
+    String soundEnabled = ConfigSettings.play_sound_notification;
 
-    public HashMap<String, Integer> getActionTracker() {
-        return actiontracker;
-    }
+    public int checkCount(String playerEvent) {
 
-    public int checkCount(String playerevent) {
-
-            return actiontracker.getOrDefault(playerevent, 0);
+            return actionTracker.getOrDefault(playerEvent, 0);
 
     }
 
-    public void resetCount(String playerevent) {
+    public void resetCount(String playerEvent) {
 
-        actiontracker.put(playerevent, 0);
-
-    }
-
-    public void addCount(String playerevent) {
-
-        actiontracker.put(playerevent, actiontracker.getOrDefault(playerevent, 0) + 1);
+        actionTracker.put(playerEvent, 0);
 
     }
 
-    public void subtractCount(String playerevent) {
+    public void addCount(String playerEvent) {
 
-        actiontracker.put(playerevent, actiontracker.getOrDefault(playerevent, 0) - 1);
+        actionTracker.put(playerEvent, actionTracker.getOrDefault(playerEvent, 0) + 1);
+
+    }
+
+    public void subtractCount(String playerEvent) {
+
+        actionTracker.put(playerEvent, actionTracker.getOrDefault(playerEvent, 0) - 1);
 
     }
 
@@ -73,6 +70,18 @@ public class ActionCounter {
 
         t.schedule(tt, date);
 
+    }
+
+    public void setCooldown(String playerEvent, long time) {
+        if(time < 1) {
+            coolDowns.remove(playerEvent);
+        } else {
+            coolDowns.put(playerEvent, time);
+        }
+    }
+
+    public long getCooldown(String playerEvent){
+        return coolDowns.getOrDefault(playerEvent, (long) System.currentTimeMillis());
     }
 
 }
