@@ -16,4 +16,8 @@ public class ConfigSettings {
     public static long block_break_cd_duration = Long.parseLong(Objects.requireNonNull(mainClass.getConfig().getString("block-break-cooldown-duration")));
     public static String block_break_exempt = mainClass.getConfig().getString("block-break-exempt-blocks");
 
+    public static String notify_chat_limit = mainClass.getConfig().getString("notify-chat-on-remaining-uses");
+    public static String notify_chat_cd = mainClass.getConfig().getString("notify-chat-on-cooldown-completion");
+    public static String play_sound_notifcation = mainClass.getConfig().getString("play-sound-on-cooldown-completion");
+
 }
