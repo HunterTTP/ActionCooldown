@@ -58,8 +58,6 @@ public class ActionTracker {
         long minutesRemaining = TimeUnit.MILLISECONDS.toMinutes(millisRemaining);
         long hoursRemaining = TimeUnit.MILLISECONDS.toHours(millisRemaining);
 
-        //player.sendMessage("secondsRemaining: " + secondsRemaining + " | minutesRemaining: " + minutesRemaining + " | hoursRemaining: " + hoursRemaining);
-
         if (secondsRemaining < 60) {
 
             player.sendMessage(ChatColor.DARK_RED.toString() + secondsRemaining + " seconds before you can do that again");

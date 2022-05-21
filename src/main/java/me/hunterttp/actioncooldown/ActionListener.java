@@ -1,6 +1,5 @@
 package me.hunterttp.actioncooldown;
 
-//import java.util.concurrent.TimeUnit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -160,8 +159,6 @@ public class ActionListener implements Listener {
             long actionLimit = ConfigSettings.attack_cd_limit;
             long cdDuration = ConfigSettings.attack_cd_duration;
             boolean mobExemptCheck = Arrays.asList(exemptMobArray).contains(targetMob);
-
-            player.sendMessage(player + " attacked " + targetMob);
 
             //check if this module is enabled in the settings and if this particular block is exempt
             if (cdEnabled == "true" && !mobExemptCheck && actionLimit > 0) {
