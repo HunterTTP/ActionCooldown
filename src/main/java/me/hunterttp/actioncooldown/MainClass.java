@@ -19,14 +19,8 @@ public final class MainClass extends JavaPlugin {
 
     // Fired when plugin is disabled
     @Override
-    public void onDisable() {
+    public void onDisable() {}
 
-
-    }
-
-    public static MainClass getInstance() {
-        return instance;
-    }
-
+    public static MainClass getInstance() {return instance;}
 
 }

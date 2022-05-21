@@ -36,6 +36,18 @@ public class ActionTracker {
 
     }
 
+    public void logEventTime(String playerEvent, long time) {
+        if(time < 1) {
+            coolDowns.remove(playerEvent);
+        } else {
+            coolDowns.put(playerEvent, time);
+        }
+    }
+
+    public long checkEventTime(String playerEvent){
+        return coolDowns.getOrDefault(playerEvent, (long) System.currentTimeMillis());
+    }
+
     public void startTimer(Player player, String eventName, long cdDuration, String playerEvent){
 
         Calendar calendar = Calendar.getInstance();
@@ -47,6 +59,9 @@ public class ActionTracker {
         int high = 3;
         int result = rand.nextInt(high-low) + low;
         float randomNote = (float)result;
+        long currentTime = System.currentTimeMillis();
+
+        logEventTime(playerEvent, currentTime);
 
         TimerTask tt = new TimerTask() {
 
@@ -70,18 +85,6 @@ public class ActionTracker {
 
         t.schedule(tt, date);
 
-    }
-
-    public void logEventTime(String playerEvent, long time) {
-        if(time < 1) {
-            coolDowns.remove(playerEvent);
-        } else {
-            coolDowns.put(playerEvent, time);
-        }
-    }
-
-    public long checkEventTime(String playerEvent){
-        return coolDowns.getOrDefault(playerEvent, (long) System.currentTimeMillis());
     }
 
 }

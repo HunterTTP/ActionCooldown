@@ -26,7 +26,6 @@ public class ActionListener implements Listener {
         long timeSinceEvent = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - actionTracker.checkEventTime(playerEvent));
         long cdDuration = ConfigSettings.block_place_cd_duration;
         long actionLimit = ConfigSettings.block_place_cd_limit;
-        long currentTime = System.currentTimeMillis();
         boolean blockExempt = exemptBlocks.toLowerCase().contains(blockName.toLowerCase());
 
         if (cdEnabled == "true" && !blockExempt) {
@@ -35,12 +34,10 @@ public class ActionListener implements Listener {
 
             if (actionTracker.checkCount(playerEvent) < actionLimit) {
 
-                actionTracker.logEventTime(playerEvent, currentTime);
                 if(notifyChatLimit == "true"){player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);}
 
             } else if (actionTracker.checkCount(playerEvent) == actionLimit) {
 
-                actionTracker.logEventTime(playerEvent, currentTime);
                 actionTracker.startTimer(player, eventName, cdDuration, playerEvent);
                 if(notifyChatLimit == "true"){player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);}
 
@@ -73,7 +70,6 @@ public class ActionListener implements Listener {
         long timeSinceEvent = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - actionTracker.checkEventTime(playerEvent));
         long cdDuration = ConfigSettings.block_break_cd_duration;
         long actionLimit = ConfigSettings.block_break_cd_limit;
-        long currentTime = System.currentTimeMillis();
         boolean blockExempt = exemptBlocks.toLowerCase().contains(blockName.toLowerCase());
 
         if (cdEnabled == "true" && !blockExempt) {
@@ -82,12 +78,10 @@ public class ActionListener implements Listener {
 
             if (actionTracker.checkCount(playerEvent) < actionLimit) {
 
-                actionTracker.logEventTime(playerEvent, currentTime);
                 if(notifyChatLimit == "true"){player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);}
 
             } else if (actionTracker.checkCount(playerEvent) == actionLimit) {
 
-                actionTracker.logEventTime(playerEvent, currentTime);
                 actionTracker.startTimer(player, eventName, cdDuration, playerEvent);
                 if(notifyChatLimit == "true"){player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);}
 
