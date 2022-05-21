@@ -1,13 +1,18 @@
+notify-chat-on-remaining-uses: true
+notify-chat-on-cooldown-completion: true
+play-sound-on-cooldown-completion: true
+
 block-place-cooldown-enabled: true
 block-place-cooldown-actionlimit: 5
 block-place-cooldown-duration: 10
-block-place-exempt-blocks: None
+block-place-exempt-blocks: Grass, Fern
 
 block-break-cooldown-enabled: true
 block-break-cooldown-actionlimit: 5
 block-break-cooldown-duration: 10
-block-break-exempt-blocks: None
+block-break-exempt-blocks: Grass, Fern
 
-notify-chat-on-remaining-uses: true
-notify-chat-on-cooldown-completion: true
-play-sound-on-cooldown-completion: true
+attack-cooldown-enabled: true
+attack-cooldown-actionlimit: 5
+attack-cooldown-duration: 10
+attack-cooldown-exempt-mobs: None

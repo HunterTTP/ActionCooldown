@@ -7,6 +7,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
+import java.util.Arrays;
 
 public class ActionListener implements Listener {
 
@@ -15,20 +18,23 @@ public class ActionListener implements Listener {
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
 
+        //Constant variables
         Player player = event.getPlayer();
         String uniqueId = player.getUniqueId().toString();
         String eventName = event.getEventName();
         String playerEvent = uniqueId + eventName;
-        String blockName = event.getBlockPlaced().getType().toString();
+
+        //Custom variables
         String exemptBlocks = ConfigSettings.block_place_exempt;
         String cdEnabled = ConfigSettings.block_place_cd_enabled;
-        String notifyChatLimit = ConfigSettings.notify_chat_limit;
+        String blockName = event.getBlockPlaced().getType().toString().toLowerCase();
+        String[] exemptBlockArray = exemptBlocks.toLowerCase().split(",");
         long actionLimit = ConfigSettings.block_place_cd_limit;
         long cdDuration = ConfigSettings.block_place_cd_duration;
-        boolean blockExempt = exemptBlocks.toLowerCase().contains(blockName.toLowerCase());
+        boolean blockExemptCheck = Arrays.asList(exemptBlockArray).contains(blockName);
 
-        //check if this module is enabled in the settings and if this paticular block is exempt
-        if (cdEnabled == "true" && !blockExempt && actionLimit > 0) {
+        //check if this module is enabled in the settings and if this particular block is exempt
+        if (cdEnabled == "true" && !blockExemptCheck && actionLimit > 0) {
 
             //add (or start) a count to represent the player successfully executing the action
             actionTracker.addCount(playerEvent);
@@ -36,23 +42,19 @@ public class ActionListener implements Listener {
             //if total number of actions is less than the limit (config.yml)
             if (actionTracker.checkCount(playerEvent) < actionLimit) {
 
-                //if enabled (config.yml) notify the user of events remaining
-                if (notifyChatLimit == "true") {
-                    player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);
-                }
+                //notify the user of events remaining (config.yml)
+                actionTracker.notifyCount(player, eventName, actionLimit, playerEvent);
 
-                //if total number of actions are equal to the limit
+            //if total number of actions are equal to the limit
             } else if (actionTracker.checkCount(playerEvent) == actionLimit) {
 
                 //start the cooldown timer which will reset the number of actions when done
                 actionTracker.startTimer(player, eventName, playerEvent, cdDuration);
 
-                //if enabled (config.yml) notify the user of actions remaining
-                if (notifyChatLimit == "true") {
-                    player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);
-                }
+                //if enabled (config.yml) notify the user of events remaining
+                actionTracker.notifyCount(player, eventName, actionLimit, playerEvent);
 
-                //if action limit is reached and cooldown is not finished
+            //if action limit is reached and/or cooldown is not finished
             } else {
 
                 //cancel the event
@@ -78,20 +80,23 @@ public class ActionListener implements Listener {
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
 
+        //Constant variables
         Player player = event.getPlayer();
         String uniqueId = player.getUniqueId().toString();
         String eventName = event.getEventName();
         String playerEvent = uniqueId + eventName;
-        String blockName = event.getBlock().getType().toString();
+
+        //Custom variables
+        String blockName = event.getBlock().getType().toString().toLowerCase();
         String exemptBlocks = ConfigSettings.block_break_exempt;
         String cdEnabled = ConfigSettings.block_break_cd_enabled;
-        String notifyChatLimit = ConfigSettings.notify_chat_limit;
+        String[] exemptBlockArray = exemptBlocks.toLowerCase().split(",");
         long actionLimit = ConfigSettings.block_break_cd_limit;
         long cdDuration = ConfigSettings.block_break_cd_duration;
-        boolean blockExempt = exemptBlocks.toLowerCase().contains(blockName.toLowerCase());
+        boolean blockExemptCheck = Arrays.asList(exemptBlockArray).contains(blockName);
 
-        //check if this module is enabled in the settings and if this paticular block is exempt
-        if (cdEnabled == "true" && !blockExempt && actionLimit > 0) {
+        //check if this module is enabled in the settings and if this particular block is exempt
+        if (cdEnabled == "true" && !blockExemptCheck && actionLimit > 0) {
 
             //add (or start) a count to represent the player successfully executing the action
             actionTracker.addCount(playerEvent);
@@ -99,10 +104,8 @@ public class ActionListener implements Listener {
             //if total number of actions is less than the limit (config.yml)
             if (actionTracker.checkCount(playerEvent) < actionLimit) {
 
-                //if enabled (config.yml) notify the user of events remaining
-                if (notifyChatLimit == "true") {
-                    player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);
-                }
+                //notify the user of events remaining (config.yml)
+                actionTracker.notifyCount(player, eventName, actionLimit, playerEvent);
 
                 //if total number of actions are equal to the limit
             } else if (actionTracker.checkCount(playerEvent) == actionLimit) {
@@ -110,12 +113,10 @@ public class ActionListener implements Listener {
                 //start the cooldown timer which will reset the number of actions when done
                 actionTracker.startTimer(player, eventName, playerEvent, cdDuration);
 
-                //if enabled (config.yml) notify the user of actions remaining
-                if (notifyChatLimit == "true") {
-                    player.sendMessage(eventName + " | " + actionTracker.checkCount(playerEvent) + "/" + actionLimit);
-                }
+                //if enabled (config.yml) notify the user of events remaining
+                actionTracker.notifyCount(player, eventName, actionLimit, playerEvent);
 
-            //if action limit is reached and cooldown is not finished
+                //if action limit is reached and/or cooldown is not finished
             } else {
 
                 //cancel the event
@@ -129,7 +130,7 @@ public class ActionListener implements Listener {
 
             }
 
-        //if action limit is zero (config.yml)
+            //if action limit is zero (config.yml)
         } else if (actionLimit <= 0) {
 
             //notify player with a special message
@@ -137,5 +138,74 @@ public class ActionListener implements Listener {
 
         }
 
+    }
+
+    @EventHandler
+    public void onAttack(EntityDamageByEntityEvent event) {
+
+        //if player is attacking
+        if (event.getDamager() instanceof Player) {
+
+            //Constant variables
+            Player player = (Player) event.getDamager();
+            String uniqueId = player.getUniqueId().toString();
+            String eventName = event.getEventName();
+            String playerEvent = uniqueId + eventName;
+
+            //Custom variables
+            String exemptMobs = ConfigSettings.attack_exempt_mobs;
+            String targetMob = event.getEntity().toString();
+            String cdEnabled = ConfigSettings.attack_cd_enabled;
+            String[] exemptMobArray = exemptMobs.toLowerCase().split(",");
+            long actionLimit = ConfigSettings.attack_cd_limit;
+            long cdDuration = ConfigSettings.attack_cd_duration;
+            boolean mobExemptCheck = Arrays.asList(exemptMobArray).contains(targetMob);
+
+            player.sendMessage(player + " attacked " + targetMob);
+
+            //check if this module is enabled in the settings and if this particular block is exempt
+            if (cdEnabled == "true" && !mobExemptCheck && actionLimit > 0) {
+
+                //add (or start) a count to represent the player successfully executing the action
+                actionTracker.addCount(playerEvent);
+
+                //if total number of actions is less than the limit (config.yml)
+                if (actionTracker.checkCount(playerEvent) < actionLimit) {
+
+                    //notify the user of events remaining (config.yml)
+                    actionTracker.notifyCount(player, eventName, actionLimit, playerEvent);
+
+                    //if total number of actions are equal to the limit
+                } else if (actionTracker.checkCount(playerEvent) == actionLimit) {
+
+                    //start the cooldown timer which will reset the number of actions when done
+                    actionTracker.startTimer(player, eventName, playerEvent, cdDuration);
+
+                    //if enabled (config.yml) notify the user of events remaining
+                    actionTracker.notifyCount(player, eventName, actionLimit, playerEvent);
+
+                    //if action limit is reached and/or cooldown is not finished
+                } else {
+
+                    //cancel the event
+                    event.setCancelled(true);
+
+                    //remove the count as the action was cancelled
+                    actionTracker.subtractCount(playerEvent);
+
+                    //notify player of the time remaining before the cooldown is complete
+                    actionTracker.notifyCooldown(player, playerEvent, cdDuration);
+
+                }
+
+                //if action limit is zero (config.yml)
+            } else if (actionLimit <= 0) {
+
+                //notify player with a special message
+                player.sendMessage(ChatColor.DARK_RED.toString() + "This action is not allowed");
+
+            }
+
+        }
     }
 }

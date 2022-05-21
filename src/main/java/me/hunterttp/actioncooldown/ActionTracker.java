@@ -13,6 +13,7 @@ public class ActionTracker {
     private final Map<String, Long> coolDowns = new HashMap<>();
     String notifyEnabled = ConfigSettings.notify_chat_cd;
     String soundEnabled = ConfigSettings.play_sound_notification;
+    String notifyChatLimit = ConfigSettings.notify_chat_limit;
 
     public int checkCount(String playerEvent) {
 
@@ -79,6 +80,15 @@ public class ActionTracker {
 
             player.sendMessage(ChatColor.DARK_RED.toString() + secondsRemaining + " seconds before you can do that again");
 
+        }
+
+
+    }
+
+    public void notifyCount(Player player, String eventName, Long actionLimit, String playerEvent){
+
+        if (notifyChatLimit == "true") {
+            player.sendMessage(eventName + " | " + checkCount(playerEvent) + "/" + actionLimit);
         }
 
 
