@@ -1,9 +1,11 @@
 package me.hunterttp.actioncooldown;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class ActionTracker {
 
@@ -48,7 +50,41 @@ public class ActionTracker {
         return coolDowns.getOrDefault(playerEvent, (long) System.currentTimeMillis());
     }
 
-    public void startTimer(Player player, String eventName, long cdDuration, String playerEvent){
+    public void notifyCooldown(Player player, String playerEvent, long cdDuration){
+
+        long millisRemaining = (checkEventTime(playerEvent) + TimeUnit.SECONDS.toMillis(cdDuration) - System.currentTimeMillis());
+        long secondsRemaining = TimeUnit.MILLISECONDS.toSeconds(millisRemaining);
+        long minutesRemaining = TimeUnit.MILLISECONDS.toMinutes(millisRemaining);
+        long hoursRemaining = TimeUnit.MILLISECONDS.toHours(millisRemaining);
+
+        //player.sendMessage("secondsRemaining: " + secondsRemaining + " | minutesRemaining: " + minutesRemaining + " | hoursRemaining: " + hoursRemaining);
+
+        if (secondsRemaining < 60) {
+
+            player.sendMessage(ChatColor.DARK_RED.toString() + secondsRemaining + " seconds before you can do that again");
+
+        }else if(secondsRemaining < 3600){
+
+            player.sendMessage(ChatColor.DARK_RED.toString() + minutesRemaining + " minutes before you can do that again");
+
+        }else if(secondsRemaining < 7200)  {
+
+            player.sendMessage(ChatColor.DARK_RED.toString() + hoursRemaining + " hour before you can do that again");
+
+        }else if(secondsRemaining > 7200) {
+
+            player.sendMessage(ChatColor.DARK_RED.toString() + hoursRemaining+ " hours before you can do that again");
+
+        }else{
+
+            player.sendMessage(ChatColor.DARK_RED.toString() + secondsRemaining + " seconds before you can do that again");
+
+        }
+
+
+    }
+
+    public void startTimer(Player player, String eventName, String playerEvent, Long cdDuration){
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.SECOND, Math.toIntExact(cdDuration));
