@@ -1,8 +1,8 @@
 package me.hunterttp.actioncooldown;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -146,13 +146,13 @@ public class ActionListener implements Listener {
         Player player = null;
 
         //set player
-        if (event.getDamager() instanceof Arrow) {
+        if (event.getDamager() instanceof Projectile) {
 
-            Arrow arrow = (Arrow) event.getDamager();
+            Projectile projectile = (Projectile) event.getDamager();
 
-            if (arrow.getShooter() instanceof Player) {
+            if (projectile.getShooter() instanceof Player) {
 
-                player = (Player) arrow.getShooter();
+                player = (Player) projectile.getShooter();
 
             }
 
