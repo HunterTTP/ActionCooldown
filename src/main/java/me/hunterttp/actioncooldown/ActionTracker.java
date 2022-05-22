@@ -72,7 +72,7 @@ public class ActionTracker {
 
         }else if(secondsRemaining > 7200) {
 
-            player.sendMessage(ChatColor.DARK_RED.toString() + hoursRemaining+ " hours before you can do that again");
+            player.sendMessage(ChatColor.DARK_RED.toString() + hoursRemaining + " hours before you can do that again");
 
         }else{
 
@@ -85,8 +85,10 @@ public class ActionTracker {
 
     public void notifyCount(Player player, String eventName, Long actionLimit, String playerEvent){
 
+        String friendlyEventName = eventName.replace("Event", "");
+
         if (notifyChatLimit == "true") {
-            player.sendMessage(eventName + " | " + checkCount(playerEvent) + "/" + actionLimit);
+            player.sendMessage(friendlyEventName + " | " + checkCount(playerEvent) + "/" + actionLimit);
         }
 
 
