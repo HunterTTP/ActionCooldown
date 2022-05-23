@@ -87,7 +87,7 @@ public class ActionTracker {
 
         String friendlyEventName = eventName.replace("Event", "");
 
-        if (notifyChatLimit == "true") {
+        if (Objects.equals(notifyChatLimit, "true")) {
             player.sendMessage(friendlyEventName + " | " + checkCount(playerEvent) + "/" + actionLimit);
         }
 
@@ -116,12 +116,12 @@ public class ActionTracker {
 
                 resetCount(playerEvent);
 
-                if(soundEnabled == "true") {
+                if(Objects.equals(soundEnabled, "true")) {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, randomNote);
                     //player.sendMessage("Note was: "+ randomNote);
                 }
 
-                if(notifyEnabled == "true"){
+                if(Objects.equals(notifyEnabled, "true")){
                     player.sendMessage(eventName + " is ready");
                 }
 
@@ -130,6 +130,56 @@ public class ActionTracker {
         };
 
         t.schedule(tt, date);
+
+    }
+
+    public boolean runChecks(Player player, String eventName, String playerEvent, String cdEnabled, long actionLimit, long cdDuration, boolean targetExemptCheck){
+
+        //check if this module is enabled in the settings and if this particular block is exempt
+        if (Objects.equals(cdEnabled, "true") && !targetExemptCheck && actionLimit > 0) {
+
+            //add (or start) a count to represent the player successfully executing the action
+            addCount(playerEvent);
+
+            //if total number of actions is less than the limit (config.yml)
+            if (checkCount(playerEvent) < actionLimit) {
+
+                //notify the user of events remaining (config.yml)
+                notifyCount(player, eventName, actionLimit, playerEvent);
+
+            //if total number of actions are equal to the limit
+            } else if (checkCount(playerEvent) == actionLimit) {
+
+                //start the cooldown timer which will reset the number of actions when done
+                startTimer(player, eventName, playerEvent, cdDuration);
+
+                //if enabled (config.yml) notify the user of events remaining
+                notifyCount(player, eventName, actionLimit, playerEvent);
+
+            //if action limit is reached and/or cooldown is not finished
+            } else {
+
+                //remove the count as the action was cancelled
+                subtractCount(playerEvent);
+
+                //notify player of the time remaining before the cooldown is complete
+                notifyCooldown(player, playerEvent, cdDuration);
+
+                //cancel the event
+                return true;
+
+            }
+
+            //if action limit is zero (config.yml)
+        } else if (actionLimit <= 0) {
+
+            //notify player with a special message
+            player.sendMessage(ChatColor.DARK_RED.toString() + "This action is not allowed");
+
+        }
+
+        //check is done
+        return false;
 
     }
 
