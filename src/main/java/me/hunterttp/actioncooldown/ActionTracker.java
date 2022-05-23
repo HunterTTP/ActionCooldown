@@ -53,32 +53,70 @@ public class ActionTracker {
 
     public void notifyCooldown(Player player, String playerEvent, long cdDuration){
 
+        String notifyEvent = playerEvent + "CooldownNotify";
+        long currentTime = System.currentTimeMillis();
+        long lastNotify = coolDowns.getOrDefault(notifyEvent, currentTime);
+        long notifyFrequency = 1000;
         long millisRemaining = (checkEventTime(playerEvent) + TimeUnit.SECONDS.toMillis(cdDuration) - System.currentTimeMillis());
         long secondsRemaining = TimeUnit.MILLISECONDS.toSeconds(millisRemaining);
         long minutesRemaining = TimeUnit.MILLISECONDS.toMinutes(millisRemaining);
         long hoursRemaining = TimeUnit.MILLISECONDS.toHours(millisRemaining);
 
-        if (secondsRemaining < 60) {
+        if (currentTime == lastNotify && Objects.equals(notifyEnabled, "true")){
 
-            player.sendMessage(ChatColor.DARK_RED.toString() + secondsRemaining + " seconds before you can do that again");
+            coolDowns.put(notifyEvent, currentTime);
 
-        }else if(secondsRemaining < 3600){
+            if (secondsRemaining < 60) {
 
-            player.sendMessage(ChatColor.DARK_RED.toString() + minutesRemaining + " minutes before you can do that again");
+                player.sendMessage(ChatColor.DARK_RED.toString() + secondsRemaining + " seconds before you can do that again");
 
-        }else if(secondsRemaining < 7200)  {
+            }else if(secondsRemaining < 3600){
 
-            player.sendMessage(ChatColor.DARK_RED.toString() + hoursRemaining + " hour before you can do that again");
+                player.sendMessage(ChatColor.DARK_RED.toString() + minutesRemaining + " minutes before you can do that again");
 
-        }else if(secondsRemaining > 7200) {
+            }else if(secondsRemaining < 7200)  {
 
-            player.sendMessage(ChatColor.DARK_RED.toString() + hoursRemaining + " hours before you can do that again");
+                player.sendMessage(ChatColor.DARK_RED.toString() + hoursRemaining + " hour before you can do that again");
 
-        }else{
+            }else if(secondsRemaining > 7200) {
 
-            player.sendMessage(ChatColor.DARK_RED.toString() + secondsRemaining + " seconds before you can do that again");
+                player.sendMessage(ChatColor.DARK_RED.toString() + hoursRemaining + " hours before you can do that again");
+
+            }else{
+
+                player.sendMessage(ChatColor.DARK_RED.toString() + secondsRemaining + " seconds before you can do that again");
+
+            }
+
+        } else if (currentTime >= (lastNotify + notifyFrequency) && Objects.equals(notifyEnabled, "true")){
+
+            coolDowns.put(notifyEvent, currentTime);
+
+            if (secondsRemaining < 60) {
+
+                player.sendMessage(ChatColor.DARK_RED.toString() + secondsRemaining + " seconds before you can do that again");
+
+            }else if(secondsRemaining < 3600){
+
+                player.sendMessage(ChatColor.DARK_RED.toString() + minutesRemaining + " minutes before you can do that again");
+
+            }else if(secondsRemaining < 7200)  {
+
+                player.sendMessage(ChatColor.DARK_RED.toString() + hoursRemaining + " hour before you can do that again");
+
+            }else if(secondsRemaining > 7200) {
+
+                player.sendMessage(ChatColor.DARK_RED.toString() + hoursRemaining + " hours before you can do that again");
+
+            }else{
+
+                player.sendMessage(ChatColor.DARK_RED.toString() + secondsRemaining + " seconds before you can do that again");
+
+            }
 
         }
+
+
 
 
     }
@@ -94,12 +132,34 @@ public class ActionTracker {
 
     }
 
+    public void notifyBlockedAction(Player player, String playerEvent){
+
+        String notifyEvent = playerEvent + "BlockNotify";
+        long currentTime = System.currentTimeMillis();
+        long lastNotify = coolDowns.getOrDefault(notifyEvent, currentTime);
+        long notifyFrequency = 1000;
+
+        if (currentTime == lastNotify && Objects.equals(notifyEnabled, "true")){
+
+            player.sendMessage(ChatColor.DARK_RED.toString() + "This action is not allowed");
+            coolDowns.put(notifyEvent, currentTime);
+
+        } else if (currentTime >= (lastNotify + notifyFrequency) && Objects.equals(notifyEnabled, "true")){
+
+            player.sendMessage(ChatColor.DARK_RED.toString() + "This action is not allowed");
+            coolDowns.put(notifyEvent, currentTime);
+
+        }
+
+    }
+
     public void startTimer(Player player, String eventName, String playerEvent, Long cdDuration){
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.SECOND, Math.toIntExact(cdDuration));
         Date date = calendar.getTime();
         Timer t = new Timer();
+        String friendlyEventName = eventName.replace("Event", "");
 
 
         long currentTime = System.currentTimeMillis();
@@ -125,7 +185,7 @@ public class ActionTracker {
 
                 if(Objects.equals(notifyEnabled, "true")){
 
-                    player.sendMessage(eventName + " is ready");
+                    player.sendMessage(friendlyEventName + " is ready");
 
                 }
 
@@ -178,7 +238,10 @@ public class ActionTracker {
         } else if (actionLimit <= 0) {
 
             //notify player with a special message
-            player.sendMessage(ChatColor.DARK_RED.toString() + "This action is not allowed");
+            notifyBlockedAction(player, playerEvent);
+
+            //cancel the event
+            return true;
 
         }
 
