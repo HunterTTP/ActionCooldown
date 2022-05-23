@@ -5,14 +5,24 @@ play-sound-on-cooldown-completion: true
 block-place-cooldown-enabled: true
 block-place-cooldown-actionlimit: 5
 block-place-cooldown-duration: 10
-block-place-exempt-blocks: Grass, Fern
+block-place-exempt-blocks: grass,fern
 
 block-break-cooldown-enabled: true
 block-break-cooldown-actionlimit: 5
 block-break-cooldown-duration: 10
-block-break-exempt-blocks: Grass, Fern
+block-break-exempt-blocks: grass,fern
 
 attack-cooldown-enabled: true
 attack-cooldown-actionlimit: 5
 attack-cooldown-duration: 10
-attack-cooldown-exempt-mobs: None
+attack-cooldown-exempt-mobs: cow
+
+drop-item-cooldown-enabled: true
+drop-item-cooldown-actionlimit: 5
+drop-item-cooldown-duration: 10
+drop-item-cooldown-exempt-items: None
+
+pickup-item-cooldown-enabled: true
+pickup-item-cooldown-actionlimit: 5
+pickup-item-cooldown-duration: 10
+pickup-item-cooldown-exempt-items: None
