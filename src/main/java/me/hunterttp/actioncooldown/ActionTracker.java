@@ -100,11 +100,8 @@ public class ActionTracker {
         calendar.add(Calendar.SECOND, Math.toIntExact(cdDuration));
         Date date = calendar.getTime();
         Timer t = new Timer();
-        Random rand = new Random();
-        int low = 1;
-        int high = 3;
-        int result = rand.nextInt(high-low) + low;
-        float randomNote = (float)result;
+
+
         long currentTime = System.currentTimeMillis();
 
         logEventTime(playerEvent, currentTime);
@@ -117,12 +114,19 @@ public class ActionTracker {
                 resetCount(playerEvent);
 
                 if(Objects.equals(soundEnabled, "true")) {
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, randomNote);
-                    //player.sendMessage("Note was: "+ randomNote);
+
+                    int min = 0;
+                    int max = 1;
+                    float pitch = new Random().nextInt(max - min + 1) + min;
+
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, pitch);
+
                 }
 
                 if(Objects.equals(notifyEnabled, "true")){
+
                     player.sendMessage(eventName + " is ready");
+
                 }
 
             };
