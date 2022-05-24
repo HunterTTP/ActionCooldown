@@ -4,6 +4,6 @@ main: me.hunterttp.actioncooldown.MainClass
 api-version: 1.18
 authors: [ HunterTTP ]
 commands:
-  ActionCooldown:
+  actioncd:
     description: Command to alter ActionCooldown limits, cd durations, etc
-    usage: /ActionCooldown
+    usage: /actioncd

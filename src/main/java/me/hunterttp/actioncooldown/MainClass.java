@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class MainClass extends JavaPlugin {
 
     public static MainClass instance;
+    public static MainClass getInstance() {return instance;}
 
     @Override
     public void onEnable() {
@@ -15,14 +16,12 @@ public final class MainClass extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new ActionListener(), this);
 
-        this.getCommand("ActionCooldown").setExecutor(new CommandListener());
+        this.getCommand("actioncd").setExecutor(new CommandListener());
 
     }
 
     // Fired when plugin is disabled
     @Override
     public void onDisable() {}
-
-    public static MainClass getInstance() {return instance;}
 
 }

@@ -9,11 +9,12 @@ import java.util.concurrent.TimeUnit;
 
 public class ActionTracker {
 
+    private static final MainClass mainClass = MainClass.getInstance();
     private final HashMap<String, Integer> actionTracker = new HashMap<>();
     private final Map<String, Long> coolDowns = new HashMap<>();
-    String notifyEnabled = ConfigSettings.notify_chat_cd;
-    String soundEnabled = ConfigSettings.play_sound_notification;
-    String notifyChatLimit = ConfigSettings.notify_chat_limit;
+    Boolean notifyEnabled = mainClass.getConfig().getBoolean("notify-chat-on-cooldown-completion");
+    Boolean soundEnabled = mainClass.getConfig().getBoolean("play-sound-on-cooldown-completion");
+    Boolean notifyChatLimit = mainClass.getConfig().getBoolean("notify-chat-on-remaining-uses");
 
     public int checkCount(String playerEvent) {
 
@@ -48,7 +49,9 @@ public class ActionTracker {
     }
 
     public long checkEventTime(String playerEvent){
+
         return coolDowns.getOrDefault(playerEvent, (long) System.currentTimeMillis());
+
     }
 
     public void notifyCooldown(Player player, String playerEvent, long cdDuration){
@@ -62,7 +65,7 @@ public class ActionTracker {
         long minutesRemaining = TimeUnit.MILLISECONDS.toMinutes(millisRemaining);
         long hoursRemaining = TimeUnit.MILLISECONDS.toHours(millisRemaining);
 
-        if (currentTime == lastNotify && Objects.equals(notifyEnabled, "true")){
+        if (currentTime == lastNotify && Objects.equals(notifyEnabled, true)){
 
             coolDowns.put(notifyEvent, currentTime);
 
@@ -88,7 +91,7 @@ public class ActionTracker {
 
             }
 
-        } else if (currentTime >= (lastNotify + notifyFrequency) && Objects.equals(notifyEnabled, "true")){
+        } else if (currentTime >= (lastNotify + notifyFrequency) && Objects.equals(notifyEnabled, true)){
 
             coolDowns.put(notifyEvent, currentTime);
 
@@ -125,7 +128,7 @@ public class ActionTracker {
 
         String friendlyEventName = eventName.replace("Event", "");
 
-        if (Objects.equals(notifyChatLimit, "true")) {
+        if (Objects.equals(notifyChatLimit, true)) {
             player.sendMessage(friendlyEventName + " | " + checkCount(playerEvent) + "/" + actionLimit);
         }
 
@@ -139,12 +142,12 @@ public class ActionTracker {
         long lastNotify = coolDowns.getOrDefault(notifyEvent, currentTime);
         long notifyFrequency = 1000;
 
-        if (currentTime == lastNotify && Objects.equals(notifyEnabled, "true")){
+        if (currentTime == lastNotify && Objects.equals(notifyEnabled, true)){
 
             player.sendMessage(ChatColor.DARK_RED.toString() + "This action is not allowed");
             coolDowns.put(notifyEvent, currentTime);
 
-        } else if (currentTime >= (lastNotify + notifyFrequency) && Objects.equals(notifyEnabled, "true")){
+        } else if (currentTime >= (lastNotify + notifyFrequency) && Objects.equals(notifyEnabled, true)){
 
             player.sendMessage(ChatColor.DARK_RED.toString() + "This action is not allowed");
             coolDowns.put(notifyEvent, currentTime);
@@ -173,7 +176,7 @@ public class ActionTracker {
 
                 resetCount(playerEvent);
 
-                if(Objects.equals(soundEnabled, "true")) {
+                if(Objects.equals(soundEnabled, true)) {
 
                     int min = 0;
                     int max = 1;
@@ -183,7 +186,7 @@ public class ActionTracker {
 
                 }
 
-                if(Objects.equals(notifyEnabled, "true")){
+                if(Objects.equals(notifyEnabled, true)){
 
                     player.sendMessage(friendlyEventName + " is ready");
 
@@ -197,10 +200,10 @@ public class ActionTracker {
 
     }
 
-    public boolean runChecks(Player player, String eventName, String playerEvent, String cdEnabled, long actionLimit, long cdDuration, boolean targetExemptCheck){
+    public boolean runChecks(Player player, String eventName, String playerEvent, Boolean cdEnabled, long actionLimit, long cdDuration, boolean targetExemptCheck){
 
         //check if this module is enabled in the settings and if this particular block is exempt
-        if (Objects.equals(cdEnabled, "true") && !targetExemptCheck && actionLimit > 0) {
+        if (Objects.equals(cdEnabled, true) && !targetExemptCheck && actionLimit > 0) {
 
             //add (or start) a count to represent the player successfully executing the action
             addCount(playerEvent);
