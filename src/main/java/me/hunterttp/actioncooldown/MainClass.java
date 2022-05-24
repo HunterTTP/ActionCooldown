@@ -15,6 +15,8 @@ public final class MainClass extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new ActionListener(), this);
 
+        this.getCommand("ActionCooldown").setExecutor(new CommandListener());
+
     }
 
     // Fired when plugin is disabled
