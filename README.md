@@ -5,3 +5,5 @@ Cooldowns currently available:
 * Placing Blocks
 * Breaking Blocks
 * Attacking mobs/players
+* Picking up items
+* Dropping items
