@@ -14,7 +14,7 @@ public class ActionTracker {
     private final Map<String, Long> coolDowns = new HashMap<>();
     Boolean notifyEnabled = mainClass.getConfig().getBoolean("notify-chat-on-cooldown-completion");
     Boolean soundEnabled = mainClass.getConfig().getBoolean("play-sound-on-cooldown-completion");
-    Boolean notifyChatLimit = mainClass.getConfig().getBoolean("notify-chat-on-remaining-uses");
+    //Boolean notifyChatLimit = mainClass.getConfig().getBoolean("notify-chat-on-remaining-uses");
 
     public int checkCount(String playerEvent) {
 
@@ -127,6 +127,7 @@ public class ActionTracker {
     public void notifyCount(Player player, String eventName, Long actionLimit, String playerEvent){
 
         String friendlyEventName = eventName.replace("Event", "");
+        Boolean notifyChatLimit = mainClass.getConfig().getBoolean("notify-chat-on-remaining-uses");
 
         if (Objects.equals(notifyChatLimit, true)) {
             player.sendMessage(friendlyEventName + " | " + checkCount(playerEvent) + "/" + actionLimit);

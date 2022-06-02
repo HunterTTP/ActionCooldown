@@ -19,13 +19,14 @@ public class CommandListener implements CommandExecutor {
 
                 sender.sendMessage("ActionCooldown is installed!");
 
-            }else if(Objects.equals(args[0], "notify-chat-on-remaining-uses")) {
+            }else if(Objects.equals(args[0], "notify-chat")) {
 
                 if (args.length == 2 && args[1] != null) {
 
                     mainClass.getConfig().set("notify-chat-on-remaining-uses", Boolean.parseBoolean(args[1]));
                     mainClass.saveConfig();
-                    sender.sendMessage(args[0] + " has been set to " + args[1]);
+                    mainClass.reloadConfig();
+                    sender.sendMessage(args[0] + " has been set to " + mainClass.getConfig().getBoolean("notify-chat-on-remaining-uses"));
 
                 } else {
 
