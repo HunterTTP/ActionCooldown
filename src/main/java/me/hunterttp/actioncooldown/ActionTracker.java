@@ -12,9 +12,6 @@ public class ActionTracker {
     private static final MainClass mainClass = MainClass.getInstance();
     private final HashMap<String, Integer> actionTracker = new HashMap<>();
     private final Map<String, Long> coolDowns = new HashMap<>();
-    Boolean notifyEnabled = mainClass.getConfig().getBoolean("notify-chat-on-cooldown-completion");
-    Boolean soundEnabled = mainClass.getConfig().getBoolean("play-sound-on-cooldown-completion");
-    //Boolean notifyChatLimit = mainClass.getConfig().getBoolean("notify-chat-on-remaining-uses");
 
     public int checkCount(String playerEvent) {
 
@@ -56,6 +53,7 @@ public class ActionTracker {
 
     public void notifyCooldown(Player player, String playerEvent, long cdDuration){
 
+        Boolean notifyEnabled = mainClass.getConfig().getBoolean("notify-chat-on-cooldown-completion");
         String notifyEvent = playerEvent + "CooldownNotify";
         long currentTime = System.currentTimeMillis();
         long lastNotify = coolDowns.getOrDefault(notifyEvent, currentTime);
@@ -138,6 +136,7 @@ public class ActionTracker {
 
     public void notifyBlockedAction(Player player, String playerEvent){
 
+        Boolean notifyEnabled = mainClass.getConfig().getBoolean("notify-chat-on-cooldown-completion");
         String notifyEvent = playerEvent + "BlockNotify";
         long currentTime = System.currentTimeMillis();
         long lastNotify = coolDowns.getOrDefault(notifyEvent, currentTime);
@@ -159,6 +158,8 @@ public class ActionTracker {
 
     public void startTimer(Player player, String eventName, String playerEvent, Long cdDuration){
 
+        Boolean notifyEnabled = mainClass.getConfig().getBoolean("notify-chat-on-cooldown-completion");
+        Boolean soundEnabled = mainClass.getConfig().getBoolean("play-sound-on-cooldown-completion");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.SECOND, Math.toIntExact(cdDuration));
         Date date = calendar.getTime();
